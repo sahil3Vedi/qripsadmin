@@ -1,0 +1,14 @@
+.login{
+    box-shadow: 0px 0px 10px #00000077;
+    max-width: 500px;
+    margin-left: 50%;
+    border-radius: 10px;
+    transform: translate(-50%,80%);
+    padding: 20px;
+}
+
+.login-title{
+    font-size: 30px;
+    text-align: center;
+    color: #2da049;
+}

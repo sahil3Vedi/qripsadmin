@@ -1,0 +1,9 @@
+.qrips-spinner{
+    text-align: center;
+    padding: 100px;
+}
+
+.ant-spin-text{
+    color: #205072 !important;
+    font-weight: bold;
+}

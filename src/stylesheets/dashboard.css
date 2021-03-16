@@ -1,0 +1,13 @@
+.admin-panel-layout{
+    display: grid;
+    grid-template-columns: auto 1fr;
+}
+
+.admin-workspace{
+    padding: 20px;
+}
+
+.workspace-title{
+    font-weight: bold;
+    font-size: 30px;
+}

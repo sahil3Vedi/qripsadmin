@@ -1,0 +1,38 @@
+/*INPUTS*/
+
+.ant-input{
+    border-radius: 10px!important;
+}
+
+.ant-input-password{
+    border-radius: 10px!important;
+}
+
+.ant-select-selector{
+    border-radius: 10px!important;
+}
+
+.ant-input-number{
+    border-radius: 10px!important;
+}
+
+/*MODALS*/
+
+.ant-modal-content, .ant-modal-header{
+    border-radius: 10px!important;
+}
+
+/*BUTTONS*/
+
+.ant-btn{
+    border-radius: 5px!important;
+}
+
+.ant-btn-primary{
+    background-color: #2da049 !important;
+    border: 0px solid white !important;
+}
+
+.ant-btn-primary:hover{
+    background-color: #1a7931 !important;
+}
