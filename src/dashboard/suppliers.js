@@ -1,11 +1,37 @@
 import React, {Component} from 'react'
-import { Button } from 'antd'
+import { Modal, Button } from 'antd'
+import { PlusOutlined } from '@ant-design/icons'
+import AddSupplier from '../other/addSupplier'
+import '../stylesheets/suppliers.css'
+
 
 class Suppliers extends Component{
+    constructor(props){
+        super(props)
+        this.state = {
+            add_supplier_modal_visible: false,
+            current_add_supplier_stage: 0
+        }
+    }
+
+    toggleAddSupplierModal = () => {
+        this.setState(prevState=>({
+            add_supplier_modal_visible: !prevState.add_supplier_modal_visible
+        }))
+    }
+
     render(){
+
+        //ADD SUPPLIER MODAL
+        let add_supplier_modal = <Modal width="35%" title="Add Supplier" visible={this.state.add_supplier_modal_visible} footer={null} onCancel={this.toggleAddSupplierModal}>
+            <AddSupplier formStage={this.state.current_add_supplier_stage} setAddSupplierStage={this.setAddSupplierStage}/>
+        </Modal>
+
         return (
             <div>
+                {add_supplier_modal}
                 <p className="workspace-title">Suppliers</p>
+                <Button type="primary" icon={<PlusOutlined/>} onClick={this.toggleAddSupplierModal}>Add Supplier</Button>
             </div>
         )
     }

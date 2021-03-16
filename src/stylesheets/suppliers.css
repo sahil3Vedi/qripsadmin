@@ -1,0 +1,9 @@
+.ant-steps{
+    margin-bottom: 20px !important;
+}
+
+.supplier-form-2{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 10px;
+}

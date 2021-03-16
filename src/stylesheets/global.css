@@ -22,6 +22,11 @@
     border-radius: 10px!important;
 }
 
+.modal-subtitle{
+    font-size: 18px;
+    font-weight: bold;
+}
+
 /*BUTTONS*/
 
 .ant-btn{
