@@ -55,7 +55,24 @@ class AddSupplier extends Component{
 
     addSupplier = () => {
         let {supplier_details,poc_details,owner_details} = this.state
-        console.log(supplier_details,poc_details,owner_details)
+        let {supplier_name,supplier_password,supplier_description,supplier_address,supplier_city,supplier_pincode,supplier_state,supplier_country} = supplier_details
+        let {poc_name,poc_email,poc_phone} = poc_details
+        let {owner_name,owner_email,owner_phone} = owner_details
+        let poc_id_url = this.state.poc_id.url
+        let poc_id_name = this.state.poc_id.name
+        let owner_id_url = this.state.owner_id.url
+        let owner_id_name = this.state.owner_id.name
+        let formData = {
+            supplier_name,supplier_password,supplier_description,supplier_address,supplier_city,supplier_pincode,supplier_state,supplier_country,
+            poc_name,poc_email,poc_phone,
+            owner_name,owner_email,owner_phone,
+            poc_id_url,owner_id_url,poc_id_name,owner_id_name
+        }
+        const config = {headers:{'x-auth-token':localStorage.getItem('token')}}
+        axios.post(`${process.env.REACT_APP_BACKEND}/suppliers`,formData,config)
+        .then(res=>{
+            console.log(res.data)
+        })
     }
 
     togglePOCIDUploading = () => {
@@ -104,7 +121,6 @@ class AddSupplier extends Component{
             fileType={this.state.view_file.name ? this.state.view_file.name.split('.')[1]: null}
             filePath={this.state.view_file.url}
             errorComponent={<div><p>Error Loading File</p></div>}
-            onError={console.log("Error Loading PDF File")}
             />
         </Modal>
 

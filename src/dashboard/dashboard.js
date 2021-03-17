@@ -1,7 +1,7 @@
 //REACT
 import React, {Component} from 'react'
 //ANT
-import { Menu, Button } from 'antd'
+import { Menu } from 'antd'
 //COMPS
 import Settings from './settings'
 import Inventory from './inventory'

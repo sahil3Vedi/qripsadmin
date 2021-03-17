@@ -3,6 +3,7 @@ import { Modal, Button } from 'antd'
 import { PlusOutlined } from '@ant-design/icons'
 import AddSupplier from '../other/addSupplier'
 import '../stylesheets/suppliers.css'
+import axios from 'axios'
 
 
 class Suppliers extends Component{
@@ -12,6 +13,14 @@ class Suppliers extends Component{
             add_supplier_modal_visible: false,
             current_add_supplier_stage: 0
         }
+    }
+
+    componentDidMount(){
+        const config = {headers:{'x-auth-token':localStorage.getItem('token')}}
+        axios.get(`${process.env.REACT_APP_BACKEND}/suppliers`,config)
+        .then(res=>{
+            console.log(res.data)
+        })
     }
 
     toggleAddSupplierModal = () => {

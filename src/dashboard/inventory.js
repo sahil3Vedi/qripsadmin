@@ -1,5 +1,4 @@
 import React, {Component} from 'react'
-import { Button } from 'antd'
 
 class Inventory extends Component{
     render(){
