@@ -1,9 +1,50 @@
+/* ANT STEPS */
+
 .ant-steps{
     margin-bottom: 20px !important;
 }
+
+.ant-steps-item-process > .ant-steps-item-container > .ant-steps-item-icon {
+    background: #2da049 !important;
+    border: 0px !important;
+}
+
+.ant-steps-item-finish .ant-steps-item-icon {
+    background-color: #fff;
+    border-color: #2da049 !important;
+}
+
+.ant-steps-item-finish .ant-steps-item-icon svg{
+    color: #2da049 !important;
+}
+
+.ant-steps-item-finish > .ant-steps-item-container > .ant-steps-item-content > .ant-steps-item-title::after {
+    background-color: #2da049 !important;
+}
+
+
+/* SUPPLIER FORM */
 
 .supplier-form-2{
     display: grid;
     grid-template-columns: 1fr 1fr;
     column-gap: 10px;
+    margin-bottom: 10px;
+}
+
+/* FILE VIWER*/
+
+.view-file{
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    column-gap: 10px;
+    padding: 10px;
+    border: 2px solid whitesmoke;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.view-file p{
+    margin-bottom: 0px;
+    transform: translateY(2px);
 }

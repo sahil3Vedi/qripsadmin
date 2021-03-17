@@ -23,7 +23,7 @@ class Suppliers extends Component{
     render(){
 
         //ADD SUPPLIER MODAL
-        let add_supplier_modal = <Modal width="35%" title="Add Supplier" visible={this.state.add_supplier_modal_visible} footer={null} onCancel={this.toggleAddSupplierModal}>
+        let add_supplier_modal = <Modal maskClosable={false} destroyOnClose width="35%" title="Add Supplier" visible={this.state.add_supplier_modal_visible} footer={null} onCancel={this.toggleAddSupplierModal}>
             <AddSupplier formStage={this.state.current_add_supplier_stage} setAddSupplierStage={this.setAddSupplierStage}/>
         </Modal>
 
