@@ -5,7 +5,7 @@ class Settings extends Component{
     render(){
         return (
             <div>
-                <p className="workspace-title">Inventory</p>
+                <p className="workspace-title">Settings</p>
                 <Button type="danger" onClick={this.props.logout}>Logout</Button>
             </div>
         )
