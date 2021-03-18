@@ -32,7 +32,7 @@
     margin-bottom: 10px;
 }
 
-/* FILE VIWER*/
+/* FILE VIEWER*/
 
 .view-file{
     display: grid;
@@ -47,4 +47,9 @@
 .view-file p{
     margin-bottom: 0px;
     transform: translateY(2px);
+}
+
+/* SUPPLIERS TABLE */
+.display-suppliers{
+    margin: 20px 0px;
 }

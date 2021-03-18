@@ -20,6 +20,7 @@ class AddSupplier extends Component{
             poc_id_uploading: false,
             owner_id_uploading: false,
             view_file_modal_visible: false,
+            adding_supplier: false,
         }
     }
 
@@ -54,6 +55,7 @@ class AddSupplier extends Component{
     }
 
     addSupplier = () => {
+        this.toggleAddingSupplier()
         let {supplier_details,poc_details,owner_details} = this.state
         let {supplier_name,supplier_password,supplier_description,supplier_address,supplier_city,supplier_pincode,supplier_state,supplier_country} = supplier_details
         let {poc_name,poc_email,poc_phone} = poc_details
@@ -71,7 +73,13 @@ class AddSupplier extends Component{
         const config = {headers:{'x-auth-token':localStorage.getItem('token')}}
         axios.post(`${process.env.REACT_APP_BACKEND}/suppliers`,formData,config)
         .then(res=>{
-            console.log(res.data)
+            this.toggleAddingSupplier()
+            this.props.fetchSuppliers()
+            this.props.toggleModal()
+        })
+        .catch(err=>{
+            console.log(err)
+            this.toggleAddingSupplier()
         })
     }
 
@@ -91,6 +99,12 @@ class AddSupplier extends Component{
         this.setState(prevState=>({
             view_file_modal_visible: !prevState.view_file_modal_visible,
             view_file: prevState.view_file_modal_visible ? {} : prevState.view_file
+        }))
+    }
+
+    toggleAddingSupplier = () => {
+        this.setState(prevState=>({
+            adding_supplier: !prevState.adding_supplier
         }))
     }
 
@@ -325,7 +339,7 @@ class AddSupplier extends Component{
                 </div>
                 <Space>
                     <Button type="danger" onClick={()=>{this.setAddSupplierStage(2)}}>Back</Button>
-                    <Button type="primary" onClick={this.addSupplier}>Add Supplier</Button>
+                    <Button type="primary" onClick={this.addSupplier} loading={this.state.adding_supplier}>Add Supplier</Button>
                 </Space>
             </div>
         )
