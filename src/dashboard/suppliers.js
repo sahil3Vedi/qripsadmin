@@ -111,7 +111,6 @@ class Suppliers extends Component{
             suppliers: temp_suppliers
         },()=>{
             const config = {headers:{'x-auth-token':localStorage.getItem('token')}}
-            let formData = {"supplier_id":supplier_id}
             axios.delete(`${process.env.REACT_APP_BACKEND}/suppliers/${supplier_id}`,config)
             .then(res=>{
                 message.success(res.data.message)
