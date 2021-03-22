@@ -1,14 +1,18 @@
 import React, {Component} from 'react'
 import axios from 'axios'
 import QripsSpin from '../other/qripsSpin'
-import { Table } from 'antd'
+import ViewProduct from '../other/viewProduct'
+import { Table, Modal, Space, Button } from 'antd'
+import { EyeOutlined, SettingOutlined, CheckCircleOutlined } from '@ant-design/icons'
 
 class Inventory extends Component{
     constructor(props){
         super(props)
         this.state={
             products_loading: true,
-            products: []
+            products: [],
+            productData: null,
+            view_product_modal_visible: false,
         }
     }
 
@@ -31,8 +35,32 @@ class Inventory extends Component{
         })
     }
 
+    toggleViewProductModal = () => {
+        this.setState(prevState=>({
+            view_product_modal_visible: !prevState.view_product_modal_visible
+        }))
+    }
+
+    viewProductDetails = (record) => {
+        this.setState({
+            productData: record
+        },()=>{
+            this.toggleViewProductModal()
+        })
+    }
+
     render(){
+        //VIEW PRODUCT MODAL
+        let view_product_modal = <Modal destroyOnClose width="35%" title="Supplier Product Details" visible={this.state.view_product_modal_visible} footer={null} onCancel={this.toggleViewProductModal}>
+            <ViewProduct data={this.state.productData}/>
+        </Modal>
+
         let product_columns = [
+            {
+                title:'Supplier',
+                dataIndex: 'supplier',
+                key:'supplier'
+            },
             {
                 title: 'Product Name',
                 dataIndex: 'supplier_name',
@@ -63,11 +91,25 @@ class Inventory extends Component{
                 dataIndex: 'expiry_date',
                 key: 'expiry_date'
             },
+            {
+                title:'',
+                dataIndex:'',
+                keyIndex:'',
+                render: (text,record) => (
+                    <Space>
+                        <Button icon={<EyeOutlined/>} onClick={()=>this.viewProductDetails(record)}/>
+                        <Button icon={<CheckCircleOutlined/>}/>
+                        <Button icon={<SettingOutlined/>}/>
+                    </Space>
+                )
+            }
         ]
         let products = <div className="display-suppliers">{this.state.loading_products ? <QripsSpin/> : <Table rowKey={"supplier_name"} columns={product_columns} dataSource={this.state.products}/>}</div>
         return (
             <div>
+                {view_product_modal}
                 <p className="workspace-title">Inventory</p>
+                <p className="workspace-subtitle">Products in Inventory: {this.state.loading_products ? "Loading..." : `${this.state.products.length}`}</p>
                 {products}
             </div>
         )
