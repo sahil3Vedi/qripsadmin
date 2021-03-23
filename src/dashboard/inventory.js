@@ -43,7 +43,10 @@ class Inventory extends Component{
         }))
     }
 
-    toggleApproveProductModal = () => {
+    toggleApproveProductModal = (record) => {
+        this.setState({
+            productData:record ? record : null
+        })
         this.setState(prevState=>({
             approve_product_modal_visible: !prevState.approve_product_modal_visible
         }))
@@ -111,7 +114,7 @@ class Inventory extends Component{
                 render: (text,record) => (
                     <Space>
                         <Button icon={<EyeOutlined/>} onClick={()=>this.viewProductDetails(record)}/>
-                        <Button icon={<CheckCircleOutlined/>}/>
+                        <Button icon={<CheckCircleOutlined/>} onClick={()=>this.toggleApproveProductModal(record)}/>
                         <Button icon={<SettingOutlined/>}/>
                     </Space>
                 )
@@ -121,6 +124,7 @@ class Inventory extends Component{
         return (
             <div>
                 {view_product_modal}
+                {approve_product_modal}
                 <p className="workspace-title">Inventory</p>
                 <p className="workspace-subtitle">Products in Inventory: {this.state.loading_products ? "Loading..." : `${this.state.products.length}`}</p>
                 {products}

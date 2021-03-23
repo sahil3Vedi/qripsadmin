@@ -1,6 +1,9 @@
 import React, {Component} from 'react'
-import { Steps, Button, message } from 'antd'
+import { Steps, Button, message, Form, Input, InputNumber, Select } from 'antd'
 import axios from 'axios'
+
+const { Step } = Steps
+const { TextArea } = Input
 
 class ApproveProduct extends Component{
     constructor(props){
@@ -17,7 +20,7 @@ class ApproveProduct extends Component{
 
     setApproveProductStage = (x) => {
         this.setState({
-            current_product_approve_stage: x
+            current_approve_product_stage: x
         })
     }
 
@@ -25,7 +28,7 @@ class ApproveProduct extends Component{
         this.setState({
             basic_details: values
         }, () => {
-            this.setAddProductStage(1)
+            this.setApproveProductStage(1)
         })
     }
 
@@ -33,7 +36,7 @@ class ApproveProduct extends Component{
         this.setState({
             pricing_details: values
         }, () => {
-            this.setAddProductStage(2)
+            this.setApproveProductStage(2)
         })
     }
 
@@ -134,8 +137,55 @@ class ApproveProduct extends Component{
             defaultFileList: this.state.pricing_details.img_upload ? this.state.pricing_details.img_upload.fileList : []
         }
 
+        let basic_form = (
+            <Form name="add_supplier" onFinish={this.updateBasicDetails} initialValues={this.state.basic_details}>
+                <p className="modal-subtitle">Supplier Basic Details</p>
+                <div className="supplier-form-2">
+                    <div><p className="attribute-key"><b>Name</b></p><p className="attribute-value">{this.props.data.supplier_name}</p></div>
+                    <div><p className="attribute-key"><b>Company</b></p><p className="attribute-value">{this.props.data.supplier_company}</p></div>
+                </div>
+                <div><p className="attribute-key"><b>Description</b></p><p className="attribute-value">{this.props.data.supplier_description}</p></div>
+                <p className="modal-subtitle">Shopping Details</p>
+                <Form.Item name="shop_name" rules={[{ required: true, message: 'Please enter Shop Name' }]}>
+                    <Input placeholder="Shop Name"/>
+                </Form.Item>
+                <Form.Item name="shop_company" rules={[{ required: true, message: 'Please enter Shop Company' }]}>
+                    <Input placeholder="Shop Company"/>
+                </Form.Item>
+                <Form.Item name="shop_description" rules={[{ required: true, message: 'Please enter Shop Description' }]}>
+                    <TextArea rows={4} placeholder="Shop Description"/>
+                </Form.Item>
+                <Form.Item name="tags" rules={[{required: true, message: 'Please enter tags'}]}>
+                    <Select
+                        mode="tags"
+                        placeholder="Enter Tags"
+                        style={{ width: '100%' }}
+                        open={false}
+                    >
+                    </Select>
+                </Form.Item>
+                <Form.Item>
+                   <Button type="primary" htmlType="submit">Next</Button> 
+                </Form.Item>
+                
+            </Form>
+        )
+
+        let pricing_form = <p>Pricing Form</p>
+        let verification = <p>Verification</p>
+
         return (
-            <p> Hello World </p>
+            <div>
+                <Steps current={this.state.current_approve_product_stage}>
+                    <Step title="Basic"/>
+                    <Step title="Pricing"/>
+                    <Step title="Verify"/>
+                </Steps>
+                {this.state.current_approve_product_stage===0 && basic_form}
+                {this.state.current_approve_product_stage===1 && pricing_form}
+                {this.state.current_approve_product_stage===2 && verification}
+
+            </div>
         )
     }
 }
