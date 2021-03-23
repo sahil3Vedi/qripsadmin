@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import axios from 'axios'
 import QripsSpin from '../other/qripsSpin'
 import ViewProduct from '../other/viewProduct'
+import ApproveProduct from '../other/approveProduct'
 import { Table, Modal, Space, Button } from 'antd'
 import { EyeOutlined, SettingOutlined, CheckCircleOutlined } from '@ant-design/icons'
 
@@ -13,6 +14,7 @@ class Inventory extends Component{
             products: [],
             productData: null,
             view_product_modal_visible: false,
+            approve_product_modal_visible: false,
         }
     }
 
@@ -41,6 +43,12 @@ class Inventory extends Component{
         }))
     }
 
+    toggleApproveProductModal = () => {
+        this.setState(prevState=>({
+            approve_product_modal_visible: !prevState.approve_product_modal_visible
+        }))
+    }
+
     viewProductDetails = (record) => {
         this.setState({
             productData: record
@@ -51,8 +59,13 @@ class Inventory extends Component{
 
     render(){
         //VIEW PRODUCT MODAL
-        let view_product_modal = <Modal destroyOnClose width="35%" title="Supplier Product Details" visible={this.state.view_product_modal_visible} footer={null} onCancel={this.toggleViewProductModal}>
+        let view_product_modal = <Modal destroyOnClose centered width="35%" title="Supplier Product Details" visible={this.state.view_product_modal_visible} footer={null} onCancel={this.toggleViewProductModal}>
             <ViewProduct data={this.state.productData}/>
+        </Modal>
+
+        //APPROVE PRODUCT MODAL
+        let approve_product_modal = <Modal destroyOnClose centered width="35%" title="Approve Product" visible={this.state.approve_product_modal_visible} footer={null} onCancel={this.toggleApproveProductModal}>
+            <ApproveProduct data={this.state.productData} fetchProducts={this.fetchProducts} toggleModal={this.toggleApproveProductModal}/>
         </Modal>
 
         let product_columns = [
