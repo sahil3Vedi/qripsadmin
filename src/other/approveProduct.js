@@ -1,10 +1,12 @@
 import React, {Component} from 'react'
-import { Steps, Button, message, Form, Input, InputNumber, Select, Upload } from 'antd'
+import { Steps, Button, message, Form, Input, InputNumber, Select, Upload, Space, Tag } from 'antd'
 import { LoadingOutlined, UploadOutlined } from '@ant-design/icons'
 import axios from 'axios'
 
 const { Step } = Steps
 const { TextArea } = Input
+const { Option } = Select
+const colors = ['#D2E7FF','#FFEDBB','#FFC6C6','#E8FFC6']
 
 class ApproveProduct extends Component{
     constructor(props){
@@ -13,7 +15,7 @@ class ApproveProduct extends Component{
             current_approve_product_stage: 0,
             approver_img: [],
             basic_details: {},
-            pricing_details: {"market_price":props.data.supplier_unit_price,"shop_price":props.data.supplier_unit_price,"color":"#f5f5f5"},
+            pricing_details: {"market_price":props.data.supplier_unit_price,"shop_price":props.data.supplier_unit_price},
             approver_img_uploading: false,
             approving_product: false
         }
@@ -99,12 +101,16 @@ class ApproveProduct extends Component{
         this.setState({product_img: temp_img})
     }
 
-    setColor = (e) => {
+    setColor = (color) => {
         let pricing_details = this.state.pricing_details
-        pricing_details.color = e.target.value
+        pricing_details.color = color
         this.setState({
             pricing_details
         })
+    }
+
+    generateImage = (d) => {
+        return <p>{d.url}</p>
     }
 
     render() {
@@ -199,20 +205,67 @@ class ApproveProduct extends Component{
                     </div>
                 </div>
                 <p className="attribute-key"><b>Upload Image</b></p>
-                <Form.Item name="img_upload">
+                <Form.Item name="img_upload" rules={[{ required: true, message: 'Please Upload an Image' }]}>
                     <Upload {...approve_img_upload_props}>{this.state.product_img_uploading ? <LoadingOutlined spin /> : <UploadOutlined/>}</Upload>
                 </Form.Item>
                 <p className="attribute-key"><b>Shopping Color</b></p>
                 <div className="supplier-form-2">
-                    <Form.Item name="color" rules={[{ required: true, message: 'Please enter a Color' }]}>
-                        <Input placeholder="Shopping Color" onChange={this.setColor}/>
+                    <Form.Item name="color" rules={[{ required: true, message: 'Please select a Color' }]}>
+                        <Select placeholder="Enter Tags" onChange={this.setColor}>
+                            {colors.map(d=><Option value={d} key={d} style={{backgroundColor:d}}>{d}</Option>)}
+                        </Select>
                     </Form.Item>
                     <div style={{backgroundColor:this.state.pricing_details.color, width:"100%",height:"32px",borderRadius:"10px"}} ></div>
                 </div>
+                <Space>
+                    <Form.Item>
+                       <Button type="danger" onClick={()=>this.setApproveProductStage(0)}>Back</Button>
+                    </Form.Item>
+                    <Form.Item>
+                       <Button type="primary" htmlType="submit">Next</Button>
+                    </Form.Item>
+                </Space>
             </Form>
         )
 
-        let verification = <p>Verification</p>
+        let verification = (
+            <div>
+                <p className="modal-subtitle">Supplier Product Details</p>
+                <div className="supplier-form-2">
+                    <div><p className="attribute-key"><b>Supplier Name</b></p><p className="attribute-value">{this.props.data.supplier_name}</p></div>
+                    <div><p className="attribute-key"><b>Supplier Company</b></p><p className="attribute-value">{this.props.data.supplier_company}</p></div>
+                    <div><p className="attribute-key"><b>Supplier Unit Price</b></p><p className="attribute-value">{this.props.data.supplier_unit_price}</p></div>
+                    <div><p className="attribute-key"><b>Expiration Date</b></p><p className="attribute-value">{this.props.data.expiry_date}</p></div>
+                    <div><p className="attribute-key"><b>Quantity</b></p><p className="attribute-value">{this.props.data.qty}</p></div>
+                    <div><p className="attribute-key"><b>{`${this.props.data.product_id_type} Number`}</b></p><p className="attribute-value">{this.props.data.product_id}</p></div>
+                </div>
+                <p className="modal-subtitle">Final Product Details</p>
+                <div className="supplier-form-2">
+                    <div><p className="attribute-key"><b>Product Name</b></p><p className="attribute-value">{this.state.basic_details.shop_name}</p></div>
+                    <div><p className="attribute-key"><b>Product Company</b></p><p className="attribute-value">{this.state.basic_details.shop_company}</p></div>
+                    <div><p className="attribute-key"><b>Product Price</b></p><p className="attribute-value">{this.state.pricing_details.shop_price}</p></div>
+                    <div><p className="attribute-key"><b>Product Market Price</b></p><p className="attribute-value">{this.state.pricing_details.market_price}</p></div>
+                </div>
+                <div className="view-uploaded-images">
+                    {
+                        this.state.approver_img.map(d=><div key={d.url}>
+                            <img className="approved-image" src={d.url} alt=""/>
+                            <div className="image-resting" style={{backgroundColor:this.state.pricing_details.color}}></div>
+                        </div>)
+                    }
+                </div>
+                <div><p className="attribute-key"><b>Product Description</b></p><p className="attribute-value">{this.state.basic_details.shop_description}</p></div>
+                <div><p className="attribute-key"><b>Tags</b></p><p className="attribute-value">{this.state.basic_details.tags ? this.state.basic_details.tags.map(d=><Tag>{d}</Tag>) : null}</p></div>
+                <Space>
+                    <Form.Item>
+                        <Button type="danger" onClick={()=>this.setApproveProductStage(1)}>Back</Button>
+                    </Form.Item>
+                    <Form.Item>
+                        <Button type="primary" onClick={this.approveProduct}>Next</Button>
+                    </Form.Item>
+                </Space>
+            </div>
+        )
 
         return (
             <div>

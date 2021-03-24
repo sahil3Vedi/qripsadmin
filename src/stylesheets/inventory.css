@@ -1,0 +1,11 @@
+.image-resting{
+    width: 100%;
+    height: 50px;
+    border-radius: 10px;
+}
+
+.approved-image{
+    width: 100%;
+    padding: 5px;
+    transform: translateY(30px);
+}

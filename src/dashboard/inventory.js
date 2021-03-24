@@ -5,6 +5,7 @@ import ViewProduct from '../other/viewProduct'
 import ApproveProduct from '../other/approveProduct'
 import { Table, Modal, Space, Button } from 'antd'
 import { EyeOutlined, SettingOutlined, CheckCircleOutlined } from '@ant-design/icons'
+import '../stylesheets/inventory.css'
 
 class Inventory extends Component{
     constructor(props){
@@ -88,7 +89,7 @@ class Inventory extends Component{
                 key: 'supplier_company'
             },
             {
-                title: 'Unit Price',
+                title: 'Supplier Unit Price',
                 dataIndex: 'supplier_unit_price',
                 key: 'supplier_unit_price'
             },
