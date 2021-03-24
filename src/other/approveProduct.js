@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
-import { Steps, Button, message, Form, Input, InputNumber, Select } from 'antd'
+import { Steps, Button, message, Form, Input, InputNumber, Select, Upload } from 'antd'
+import { LoadingOutlined, UploadOutlined } from '@ant-design/icons'
 import axios from 'axios'
 
 const { Step } = Steps
@@ -12,7 +13,7 @@ class ApproveProduct extends Component{
             current_approve_product_stage: 0,
             approver_img: [],
             basic_details: {},
-            pricing_details: {},
+            pricing_details: {"market_price":props.data.supplier_unit_price,"shop_price":props.data.supplier_unit_price,"color":"#f5f5f5"},
             approver_img_uploading: false,
             approving_product: false
         }
@@ -98,6 +99,14 @@ class ApproveProduct extends Component{
         this.setState({product_img: temp_img})
     }
 
+    setColor = (e) => {
+        let pricing_details = this.state.pricing_details
+        pricing_details.color = e.target.value
+        this.setState({
+            pricing_details
+        })
+    }
+
     render() {
         // Approver Image Upload Props
         let approve_img_upload_props = {
@@ -112,14 +121,14 @@ class ApproveProduct extends Component{
                     formData.append("upload_preset", "msiuxpoc")
                     axios.post("https://api.cloudinary.com/v1_1/dxti6efrg/image/upload", formData)
                         .then(res => {
-                            let approve_img = this.state.approve_img
-                            approve_img.push({
+                            let approver_img = this.state.approver_img
+                            approver_img.push({
                                 url: res.data.secure_url,
                                 name: `${res.data.public_id.split('/')[1]}.${res.data.format}`,
                                 uid: file.uid
                             })
                             this.setState({
-                                    approve_img
+                                    approver_img
                             }, () => {
                                 this.toggleApproveImgUploading()
                             })
@@ -138,7 +147,7 @@ class ApproveProduct extends Component{
         }
 
         let basic_form = (
-            <Form name="add_supplier" onFinish={this.updateBasicDetails} initialValues={this.state.basic_details}>
+            <Form name="add_basic" onFinish={this.updateBasicDetails} initialValues={this.state.basic_details}>
                 <p className="modal-subtitle">Supplier Basic Details</p>
                 <div className="supplier-form-2">
                     <div><p className="attribute-key"><b>Name</b></p><p className="attribute-value">{this.props.data.supplier_name}</p></div>
@@ -165,13 +174,44 @@ class ApproveProduct extends Component{
                     </Select>
                 </Form.Item>
                 <Form.Item>
-                   <Button type="primary" htmlType="submit">Next</Button> 
+                   <Button type="primary" htmlType="submit">Next</Button>
                 </Form.Item>
-                
+
             </Form>
         )
 
-        let pricing_form = <p>Pricing Form</p>
+        let pricing_form = (
+            <Form name="add_pricing" onFinish={this.updatePricingDetails} initialValues={this.state.pricing_details}>
+                <p className="modal-subtitle">Pricing Details</p>
+                <p className="attribute-key"><b>Supplier Unit Price</b></p><p className="attribute-value">{this.props.data.supplier_unit_price}</p>
+                <div className="supplier-form-2">
+                    <div>
+                        <p className="attribute-key"><b>Market Price</b></p>
+                        <Form.Item name="market_price" rules={[{ required: true, message: 'Please enter Market Price' }]}>
+                            <InputNumber precision={0} placeholder="Market Price" min={this.props.data.supplier_unit_price} max={1500} formatter={value => `₹ ${value}`} step={10} parser={value => value.replace('₹ ', '')}/>
+                        </Form.Item>
+                    </div>
+                    <div>
+                        <p className="attribute-key"><b>Shop Price</b></p>
+                        <Form.Item name="shop_price" rules={[{ required: true, message: 'Please enter Shop Price' }]}>
+                            <InputNumber precision={0} placeholder="Shop Price" min={this.props.data.supplier_unit_price} max={1500} formatter={value => `₹ ${value}`} step={10} parser={value => value.replace('₹ ', '')}/>
+                        </Form.Item>
+                    </div>
+                </div>
+                <p className="attribute-key"><b>Upload Image</b></p>
+                <Form.Item name="img_upload">
+                    <Upload {...approve_img_upload_props}>{this.state.product_img_uploading ? <LoadingOutlined spin /> : <UploadOutlined/>}</Upload>
+                </Form.Item>
+                <p className="attribute-key"><b>Shopping Color</b></p>
+                <div className="supplier-form-2">
+                    <Form.Item name="color" rules={[{ required: true, message: 'Please enter a Color' }]}>
+                        <Input placeholder="Shopping Color" onChange={this.setColor}/>
+                    </Form.Item>
+                    <div style={{backgroundColor:this.state.pricing_details.color, width:"100%",height:"32px",borderRadius:"10px"}} ></div>
+                </div>
+            </Form>
+        )
+
         let verification = <p>Verification</p>
 
         return (
