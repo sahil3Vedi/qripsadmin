@@ -28,7 +28,7 @@ class Inventory extends Component{
             loading_products: true
         },()=>{
             const config = {headers:{'x-auth-token':localStorage.getItem('token')}}
-            axios.get(`${process.env.REACT_APP_BACKEND}/products/all`,config)
+            axios.get(`${process.env.REACT_APP_BACKEND}/products/inventory`,config)
             .then(res=>{
                 this.setState({
                     products: res.data,
@@ -44,10 +44,15 @@ class Inventory extends Component{
         }))
     }
 
-    toggleApproveProductModal = (record) => {
+    setProductData = (record) => {
         this.setState({
             productData:record ? record : null
+        },()=>{
+            this.toggleApproveProductModal()
         })
+    }
+
+    toggleApproveProductModal = () => {
         this.setState(prevState=>({
             approve_product_modal_visible: !prevState.approve_product_modal_visible
         }))
@@ -115,7 +120,7 @@ class Inventory extends Component{
                 render: (text,record) => (
                     <Space>
                         <Button icon={<EyeOutlined/>} onClick={()=>this.viewProductDetails(record)}/>
-                        <Button icon={<CheckCircleOutlined/>} onClick={()=>this.toggleApproveProductModal(record)}/>
+                        <Button icon={<CheckCircleOutlined/>} onClick={()=>this.setProductData(record)}/>
                         <Button icon={<SettingOutlined/>}/>
                     </Space>
                 )
@@ -127,7 +132,7 @@ class Inventory extends Component{
                 {view_product_modal}
                 {approve_product_modal}
                 <p className="workspace-title">Inventory</p>
-                <p className="workspace-subtitle">Products in Inventory: {this.state.loading_products ? "Loading..." : `${this.state.products.length}`}</p>
+                <p className="workspace-subtitle">{this.state.loading_products ? null : `${this.state.products.length} Products in Inventory`}</p>
                 {products}
             </div>
         )

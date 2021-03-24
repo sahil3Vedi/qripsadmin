@@ -47,26 +47,25 @@ class ApproveProduct extends Component{
         this.toggleApprovingProduct()
         let { basic_details, pricing_details } = this.state
         let { shop_name, shop_company, shop_description, tags } = basic_details
-        let { market_price, shop_price, shop_images, color } = pricing_details
+        let { market_price, shop_price, color } = pricing_details
         let supplier_name = this.props.data.supplier_name
         // Manip supplier_img
-        let approver_images = this.state.approver_img.map(d=>d.url)
+        let shop_images = JSON.stringify(this.state.approver_img.map(d=>d.url))
         let formData = {
             shop_name, shop_company, shop_description, tags,
             market_price, shop_price, shop_images, color,
-            supplier_name, approver_images
+            supplier_name
         }
-        console.log(formData)
         const config = {headers:{'x-auth-token':localStorage.getItem('token')}}
         axios.post(`${process.env.REACT_APP_BACKEND}/products/approve`,formData,config)
         .then(res=>{
-            console.log(res.data)
+            message.success(res.data.message)
             this.toggleApprovingProduct()
             this.props.fetchProducts()
             this.props.toggleModal()
         })
         .catch(err=>{
-            console.log(err)
+            message.error(err.res.data.message)
             this.toggleApprovingProduct()
         })
     }
@@ -211,7 +210,7 @@ class ApproveProduct extends Component{
                 <p className="attribute-key"><b>Shopping Color</b></p>
                 <div className="supplier-form-2">
                     <Form.Item name="color" rules={[{ required: true, message: 'Please select a Color' }]}>
-                        <Select placeholder="Enter Tags" onChange={this.setColor}>
+                        <Select placeholder="Select Color" onChange={this.setColor}>
                             {colors.map(d=><Option value={d} key={d} style={{backgroundColor:d}}>{d}</Option>)}
                         </Select>
                     </Form.Item>
@@ -255,13 +254,13 @@ class ApproveProduct extends Component{
                     }
                 </div>
                 <div><p className="attribute-key"><b>Product Description</b></p><p className="attribute-value">{this.state.basic_details.shop_description}</p></div>
-                <div><p className="attribute-key"><b>Tags</b></p><p className="attribute-value">{this.state.basic_details.tags ? this.state.basic_details.tags.map(d=><Tag>{d}</Tag>) : null}</p></div>
+                <div><p className="attribute-key"><b>Tags</b></p><p className="attribute-value">{this.state.basic_details.tags ? this.state.basic_details.tags.map(d=><Tag key={d}>{d}</Tag>) : null}</p></div>
                 <Space>
                     <Form.Item>
                         <Button type="danger" onClick={()=>this.setApproveProductStage(1)}>Back</Button>
                     </Form.Item>
                     <Form.Item>
-                        <Button type="primary" onClick={this.approveProduct}>Next</Button>
+                        <Button type="primary" onClick={this.approveProduct} loading={this.state.approving_product}>Approve</Button>
                     </Form.Item>
                 </Space>
             </div>
