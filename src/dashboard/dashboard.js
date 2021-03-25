@@ -6,6 +6,7 @@ import { Menu } from 'antd'
 import Settings from './settings'
 import Inventory from './inventory'
 import Suppliers from './suppliers'
+import Store from './store'
 //CSS
 import '../stylesheets/dashboard.css'
 //ACTIONS
@@ -36,6 +37,9 @@ class Dashboard extends Component{
                 break
             case "inventory":
                 display = <Inventory/>
+                break
+            case "store":
+                display = <Store/>
                 break
             default:
                 display = <p>{this.state.current}</p>
