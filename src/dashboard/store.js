@@ -16,6 +16,7 @@ class Store extends Component{
             productData: null,
             view_product_modal_visible: false,
             approve_product_modal_visible: false,
+            pulling_product: false
         }
     }
 
@@ -66,6 +67,12 @@ class Store extends Component{
         })
     }
 
+    togglePullingProduct = () => {
+        this.setState(prevState=>({
+            pulling_product: !prevState.pulling_product
+        }))
+    }
+
     render(){
         console.log(this.state.products)
         //VIEW PRODUCT MODAL
@@ -73,9 +80,9 @@ class Store extends Component{
             <ViewProduct data={this.state.productData}/>
         </Modal>
 
-        //APPROVE PRODUCT MODAL
-        let approve_product_modal = <Modal destroyOnClose centered width="35%" title="Product Settings" visible={this.state.approve_product_modal_visible} footer={null} onCancel={this.toggleApproveProductModal}>
-            <ApprovedProductSettings data={this.state.productData} fetchProducts={this.fetchProducts} toggleModal={this.toggleApproveProductModal}/>
+        //PRODUCT SETTINGS MODAL
+        let product_settings_modal = <Modal destroyOnClose centered width="35%" title="Product Settings" visible={this.state.approve_product_modal_visible} footer={null} onCancel={this.toggleApproveProductModal}>
+            <ApprovedProductSettings togglePullingProduct={this.togglePullingProduct} pullingProduct={this.state.pulling_product} data={this.state.productData} fetchProducts={this.fetchProducts} toggleModal={this.toggleApproveProductModal}/>
         </Modal>
 
         let product_columns = [
@@ -140,7 +147,7 @@ class Store extends Component{
         return (
             <div>
                 {view_product_modal}
-                {approve_product_modal}
+                {product_settings_modal}
                 <p className="workspace-title">Store</p>
                 <p className="workspace-subtitle">{this.state.loading_products ? null : `${this.state.products.length} Products in Store`}</p>
                 {products}

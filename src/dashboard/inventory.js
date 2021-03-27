@@ -16,6 +16,7 @@ class Inventory extends Component{
             productData: null,
             view_product_modal_visible: false,
             approve_product_modal_visible: false,
+            pulling_product: false
         }
     }
 
@@ -64,6 +65,12 @@ class Inventory extends Component{
         },()=>{
             this.toggleViewProductModal()
         })
+    }
+
+    togglePullingProduct = () => {
+        this.setState(prevState=>({
+            pulling_product: !prevState.pulling_product
+        }))
     }
 
     render(){
