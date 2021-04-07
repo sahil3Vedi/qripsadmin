@@ -188,8 +188,9 @@ class ApproveProduct extends Component{
         let pricing_form = (
             <Form name="add_pricing" onFinish={this.updatePricingDetails} initialValues={this.state.pricing_details}>
                 <p className="modal-subtitle">Pricing Details</p>
-                <p className="attribute-key"><b>Supplier Unit Price</b></p><p className="attribute-value">{this.props.data.supplier_unit_price}</p>
                 <div className="supplier-form-2">
+                    <div><p className="attribute-key"><b>Supplier Unit Price</b></p><p className="attribute-value">{this.props.data.supplier_unit_price}</p></div>
+                    <div><p className="attribute-key"><b>Content Per Unit</b></p><p className="attribute-value">{`${this.props.data.supplier_unit_quantity}${this.props.data.supplier_unit_quantity_type}`}</p></div>
                     <div>
                         <p className="attribute-key"><b>Market Price</b></p>
                         <Form.Item name="market_price" rules={[{ required: true, message: 'Please enter Market Price' }]}>
