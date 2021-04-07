@@ -50,7 +50,7 @@ class ApproveProduct extends Component{
         let { market_price, shop_price, color } = pricing_details
         let supplier_name = this.props.data.supplier_name
         // Manip supplier_img
-        let shop_images = JSON.stringify(this.state.approver_img.map(d=>d.url))
+        let shop_images = this.state.approver_img.map(d=>d.url)
         let formData = {
             shop_name, shop_company, shop_description, tags,
             market_price, shop_price, shop_images, color,
