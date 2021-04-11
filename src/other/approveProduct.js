@@ -145,7 +145,7 @@ class ApproveProduct extends Component{
             listType:"picture-card",
             multiple: false,
             showUploadList: true,
-            accept: ".png,.jpg",
+            accept: ".svg",
             onPreview: this.onPreview,
             onRemove: this.onRemove,
             defaultFileList: this.state.pricing_details.img_upload ? this.state.pricing_details.img_upload.fileList : []
